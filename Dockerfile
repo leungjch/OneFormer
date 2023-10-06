@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.3.1-cudnn8-devel-ubuntu18.04
+FROM nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04
 CMD nvidia-smi
 
 ENV DEBIAN_FRONTEND noninteractive
@@ -23,10 +23,14 @@ RUN pyenv install 3.8.15 && \
     pyenv rehash && \
     pip install --no-cache-dir --upgrade pip setuptools wheel
 
+USER root
+
 ENV WORKDIR=/code
 WORKDIR $WORKDIR
 RUN chown -R user:user $WORKDIR
 RUN chmod -R 777 $WORKDIR
+
+USER root
 
 COPY requirements.txt $WORKDIR/requirements.txt
 RUN pip install --no-cache-dir --upgrade -r $WORKDIR/requirements.txt
