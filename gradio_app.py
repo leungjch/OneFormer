@@ -25,31 +25,34 @@ import gradio as gr
 from huggingface_hub import hf_hub_download
 
 KEY_DICT = {"Cityscapes (19 classes)": "cityscapes",
-            "COCO (133 classes)": "coco",
-            "ADE20K (150 classes)": "ade20k",}
+            # "COCO (133 classes)": "coco",
+            # "ADE20K (150 classes)": "ade20k",
+            }
 
 SWIN_CFG_DICT = {"cityscapes": "configs/cityscapes/oneformer_swin_large_IN21k_384_bs16_90k.yaml",
-            "coco": "configs/coco/oneformer_swin_large_IN21k_384_bs16_100ep.yaml",
-            "ade20k": "configs/ade20k/oneformer_swin_large_IN21k_384_bs16_160k.yaml",}
+            # "coco": "configs/coco/oneformer_swin_large_IN21k_384_bs16_100ep.yaml",
+            # "ade20k": "configs/ade20k/oneformer_swin_large_IN21k_384_bs16_160k.yaml",
+            }
 
 SWIN_MODEL_DICT = {"cityscapes": hf_hub_download(repo_id="shi-labs/oneformer_cityscapes_swin_large", 
                                             filename="250_16_swin_l_oneformer_cityscapes_90k.pth"),
-              "coco": hf_hub_download(repo_id="shi-labs/oneformer_coco_swin_large", 
-                                            filename="150_16_swin_l_oneformer_coco_100ep.pth"),
-              "ade20k": hf_hub_download(repo_id="shi-labs/oneformer_ade20k_swin_large", 
-                                            filename="250_16_swin_l_oneformer_ade20k_160k.pth")
+            #   "coco": hf_hub_download(repo_id="shi-labs/oneformer_coco_swin_large", 
+            #                                 filename="150_16_swin_l_oneformer_coco_100ep.pth"),
+            #   "ade20k": hf_hub_download(repo_id="shi-labs/oneformer_ade20k_swin_large", 
+            #                                 filename="250_16_swin_l_oneformer_ade20k_160k.pth")
             }
 
 DINAT_CFG_DICT = {"cityscapes": "configs/cityscapes/oneformer_dinat_large_bs16_90k.yaml",
-            "coco": "configs/coco/oneformer_dinat_large_bs16_100ep.yaml",
-            "ade20k": "configs/ade20k/oneformer_dinat_large_IN21k_384_bs16_160k.yaml",}
+            # "coco": "configs/coco/oneformer_dinat_large_bs16_100ep.yaml",
+            # "ade20k": "configs/ade20k/oneformer_dinat_large_IN21k_384_bs16_160k.yaml",
+            }
 
 DINAT_MODEL_DICT = {"cityscapes": hf_hub_download(repo_id="shi-labs/oneformer_cityscapes_dinat_large", 
                                             filename="250_16_dinat_l_oneformer_cityscapes_90k.pth"),
-              "coco": hf_hub_download(repo_id="shi-labs/oneformer_coco_dinat_large", 
-                                            filename="150_16_dinat_l_oneformer_coco_100ep.pth"),
-              "ade20k": hf_hub_download(repo_id="shi-labs/oneformer_ade20k_dinat_large", 
-                                            filename="250_16_dinat_l_oneformer_ade20k_160k.pth")
+            #   "coco": hf_hub_download(repo_id="shi-labs/oneformer_coco_dinat_large", 
+            #                                 filename="150_16_dinat_l_oneformer_coco_100ep.pth"),
+            #   "ade20k": hf_hub_download(repo_id="shi-labs/oneformer_ade20k_dinat_large", 
+            #                                 filename="250_16_dinat_l_oneformer_ade20k_160k.pth")
             }
 
 MODEL_DICT = {"DiNAT-L": DINAT_MODEL_DICT,
@@ -91,7 +94,7 @@ METADATA = {
 }
 
 def setup_modules():
-    for dataset in ["Cityscapes (19 classes)", "COCO (133 classes)", "ADE20K (150 classes)"]:
+    for dataset in ["Cityscapes (19 classes)"]:
         for backbone in ["DiNAT-L", "Swin-L"]:
             cfg = setup_cfg(dataset, backbone)
             metadata = MetadataCatalog.get(
@@ -185,8 +188,8 @@ def segment(path, task, dataset, backbone):
     out_map = Image.fromarray(out_map.get_image())
     return out, out_map
 
-title = "<h1 style='margin-bottom: -10px; text-align: center'>OneFormer: One Transformer to Rule Universal Image Segmentation</h1>"
-
+title = "<h1 text-align: center'>OneFormer: One Transformer to Rule Universal Image Segmentation</h1>"
+# style='margin-bottom: -10px;
 description = "<p style='font-size: 14px; margin: 5px; font-weight: w300; text-align: center'> <a href='https://praeclarumjj3.github.io/' style='text-decoration:none' target='_blank'>Jitesh Jain, </a> <a href='https://chrisjuniorli.github.io/' style='text-decoration:none' target='_blank'>Jiachen Li<sup>*</sup>, </a> <a href='https://www.linkedin.com/in/mtchiu/' style='text-decoration:none' target='_blank'>MangTik Chiu<sup>*</sup>, </a> <a href='https://alihassanijr.com/' style='text-decoration:none' target='_blank'>Ali Hassani, </a> <a href='https://www.linkedin.com/in/nukich74/' style='text-decoration:none' target='_blank'>Nikita Orlov, </a> <a href='https://www.humphreyshi.com/home' style='text-decoration:none' target='_blank'>Humphrey Shi</a></p>" \
             + "<p style='font-size: 16px; margin: 5px; font-weight: w600; text-align: center'> <a href='https://praeclarumjj3.github.io/oneformer/' target='_blank'>Project Page</a> | <a href='https://arxiv.org/abs/2211.06220' target='_blank'>ArXiv Paper</a> | <a href='https://github.com/SHI-Labs/OneFormer' target='_blank'>Github Repo</a></p>" \
             + "<p style='text-align: center; margin: 5px; font-size: 14px; font-weight: w300;'>  \
@@ -198,7 +201,7 @@ setup_modules()
 
 gradio_inputs = [gr.Image(source="upload", tool=None, label="Input Image",type="filepath"),
             gr.Radio(choices=["the task is panoptic" ,"the task is instance", "the task is semantic"], type="value", value="the task is panoptic", label="Task Token Input"),
-            gr.Radio(choices=["COCO (133 classes)" ,"Cityscapes (19 classes)", "ADE20K (150 classes)"], type="value", value="COCO (133 classes)", label="Model"),
+            gr.Radio(choices=["Cityscapes (19 classes)"], type="value", value="Cityscapes (19 classes)", label="Model"),
             gr.Radio(choices=["DiNAT-L" ,"Swin-L"], type="value", value="DiNAT-L", label="Backbone"),
             ]
 gradio_outputs = [gr.Image(type="pil", label="Segmentation Overlay"), gr.Image(type="pil", label="Segmentation Map")]
