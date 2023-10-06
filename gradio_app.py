@@ -119,6 +119,7 @@ def setup_cfg(dataset, backbone):
     cfg_path = CFG_DICT[backbone][dataset]
     cfg.merge_from_file(cfg_path)
     if torch.cuda.is_available():
+        print("Using GPU")
         cfg.MODEL.DEVICE = 'cuda'
     else:
         cfg.MODEL.DEVICE = 'cpu'
